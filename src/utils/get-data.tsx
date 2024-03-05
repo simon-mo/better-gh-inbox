@@ -13,9 +13,9 @@ const octokit = new Octokit({
   auth: process.env.GITHUB_TOKEN,
 });
 
-async function getThread(id: number) {
+async function getThread(id: string) {
   const thread = await octokit.rest.activity.getThread({
-    thread_id: id,
+    thread_id: Number(id),
   });
 
   return {
@@ -58,8 +58,8 @@ async function getComments(id: number) {
       id: comment.id,
       body: comment.body,
       url: comment.html_url,
-      author: comment.user.login,
-      authorAvatarUrl: comment.user.avatar_url,
+      author: comment.user!.login,
+      authorAvatarUrl: comment.user!.avatar_url,
     };
   });
 }
@@ -75,8 +75,8 @@ async function getComment(id: number) {
     id: comment.data.id,
     body: comment.data.body,
     url: comment.data.html_url,
-    author: comment.data.user.login,
-    authorAvatarUrl: comment.data.user.avatar_url,
+    author: comment.data.user!.login,
+    authorAvatarUrl: comment.data.user!.avatar_url,
   };
 }
 

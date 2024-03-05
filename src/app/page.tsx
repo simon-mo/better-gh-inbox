@@ -8,13 +8,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getComment, getMyNotifications } from "@/utils/get-data";
-import { get } from "http";
+import { getMyNotifications } from "@/utils/get-data";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<any>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -44,7 +43,7 @@ export default function Home() {
           </TableHeader>
 
           <TableBody>
-            {data.map((notification) => {
+            {data.map((notification: any) => {
               return (
                 <TableRow
                   key={notification.id}

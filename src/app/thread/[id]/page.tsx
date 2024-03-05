@@ -24,26 +24,18 @@ import {
   CommandList,
 } from "@/components/ui/command";
 
-function Issue({ data }) {
-  return (
-    <div>
-      <h1>{data.title}</h1>
-      <Badge>{data.reason}</Badge>
-    </div>
-  );
-}
 const markdownRenderer = remark().use(html);
 
-function PullRequest({ data }) {
-  const [pr, setPR] = useState(null);
-  const [latestComment, setLatestComment] = useState(null);
-  const [bodyHTML, setBodyHTML] = useState(null);
-  const [comments, setComments] = useState(null);
+function PullRequest({ data }: { data: any }) {
+  const [pr, setPR] = useState<any>(null);
+  const [latestComment, setLatestComment] = useState<any>(null);
+  const [bodyHTML, setBodyHTML] = useState<any>(null);
+  const [comments, setComments] = useState<any>(null);
 
   const [openCommand, setOpenCommand] = useState(false); // move this to global layout
 
   useEffect(() => {
-    const handleKeyDown = (event) => {
+    const handleKeyDown = (event: any) => {
       // cmd + k
       if (event.metaKey && event.key === "k") {
         event.preventDefault();
@@ -74,7 +66,9 @@ function PullRequest({ data }) {
       const comments = await getComments(prID);
       setComments(comments);
 
-      const markdownRendered = await markdownRenderer.process(result.body);
+      const markdownRendered = await markdownRenderer.process(
+        result.body as string
+      );
 
       setBodyHTML(markdownRendered);
     };
@@ -133,7 +127,7 @@ function PullRequest({ data }) {
       {comments && (
         <div>
           <h2>Comments</h2>
-          {comments.map((comment) => (
+          {comments.map((comment: any) => (
             <div key={comment.id} className="my-4">
               {/* render the avatar */}
               <img
@@ -168,17 +162,17 @@ export default function Page({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await getThread(params.id);
+      const result: any = await getThread(params.id);
       setData(result);
       const notifList = JSON.parse(
-        window.sessionStorage.getItem("notifications")
+        window.sessionStorage.getItem("notifications")!
       );
-      setPrev(notifList.find((notif) => notif.next_id === params.id)?.id);
-      setNext(notifList.find((notif) => notif.prev_id === params.id)?.id);
+      setPrev(notifList.find((notif: any) => notif.next_id === params.id)?.id);
+      setNext(notifList.find((notif: any) => notif.prev_id === params.id)?.id);
     };
 
     fetchData();
-  }, []);
+  }, [params.id]);
 
   // register keyboard listener for j and k
   useEffect(() => {
@@ -214,13 +208,13 @@ export default function Page({ params }: { params: { id: string } }) {
   return (
     <div>
       <h1>
-        {data.type === "Issue" ? (
+        {/* {data.type === "Issue" ? (
           <PullRequest data={data} />
-        ) : data.type === "PullRequest" ? (
-          <PullRequest data={data} />
-        ) : (
+        ) : data.type === "PullRequest" ? ( */}
+        <PullRequest data={data} />
+        {/* ) : (
           <div>Unknown type: {data.type}</div>
-        )}
+        )} */}
       </h1>
     </div>
   );
